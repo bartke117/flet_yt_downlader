@@ -6,11 +6,9 @@ from pytube import YouTube
 def main(page):
     
     page.title = "YouTube Downloader"
-    
     page.window_width = 550
     page.window_height = 350
     page.window_resizable = False  
-    
     
     def download(yt_link):
 
@@ -19,7 +17,7 @@ def main(page):
             page.update()
             yt_object = YouTube(yt_link)
             finish_label.value = yt_object.title
-            media = yt_object.streams.get_highest_resolution()
+            media = yt_object.streams.get_by_resolution(dropdown_menu.value)
             media.download()
         except:
             print("error")
@@ -27,6 +25,7 @@ def main(page):
 
     text_field = ft.TextField(label="YouTube Link", width=510)
     finish_label = ft.Text("")
+    quality_test_label = ft.Text("")
     download_button = ft.ElevatedButton("Download", width= 250, on_click=download)
     dropdown_menu = ft.Dropdown(
         width= 250,
@@ -40,13 +39,10 @@ def main(page):
     page.add(
         text_field,
         finish_label,
+        quality_test_label,
         ft.Row(controls=[
             download_button,
             dropdown_menu
         ]))
     
-    
-        
-
-
 ft.app(target=main)
